@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">SubmissionNavigationAPI</string>
+    <string name="title_home">Home</string>
+    <string name="title_upcoming">Upcoming</string>
+    <string name="title_finished">Finished</string>
+    <string name="event_image_desc">Image of the event</string>
+    <string name="tv_dicoding_events">Dicoding Events</string>
+    <string name="tv_finished_past_events">PAST EVENTS</string>
+    <string name="tv_recommendation_events_for_you">RECOMMENDATION EVENTS FOR YOU</string>
+    <string name="tv_finished_events">FINISHED EVENTS</string>
+    <string name="tv_upcoming_recommendation">RECOMMENDATION EVENTS FOR YOU</string>
+    <string name="btn_interested">I\'m Interested</string>
+    <string name="text_remaining_quota">Remaining Quota</string>
+    <string name="title_description">Description</string>
+    <string name="hint_deskripsi">Deskripsi</string>
+    <string name="hint_kuota">Quota</string>
+    <string name="hint_date">Event Date</string>
+    <string name="hint_owner">Owner</string>
+    <string name="hint_nama_acara">Event Name</string>
+    <string name="remaining_quota">Remaining Quota: %d</string>
+</resources>
