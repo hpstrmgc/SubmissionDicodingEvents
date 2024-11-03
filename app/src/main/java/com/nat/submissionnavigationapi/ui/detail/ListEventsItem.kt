@@ -1,4 +1,4 @@
-package com.nat.submissionnavigationapi
+package com.nat.submissionnavigationapi.ui.detail
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

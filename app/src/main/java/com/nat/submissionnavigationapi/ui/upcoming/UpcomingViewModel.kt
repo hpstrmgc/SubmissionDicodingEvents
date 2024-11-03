@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.nat.submissionnavigationapi.ApiConfig
-import com.nat.submissionnavigationapi.EventResponse
-import com.nat.submissionnavigationapi.ListEventsItem
+import com.nat.submissionnavigationapi.resource.ApiConfig
+import com.nat.submissionnavigationapi.resource.EventResponse
+import com.nat.submissionnavigationapi.ui.detail.ListEventsItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,14 +24,13 @@ class UpcomingViewModel : ViewModel() {
     }
 
     private fun fetchEvents() {
-        _isLoading.value = true // Tampilkan progress bar
+        _isLoading.value = true
         val client = ApiConfig.getApiService().getUpcomingEvents()
         client.enqueue(object : Callback<EventResponse> {
             override fun onResponse(
-                call: Call<EventResponse>,
-                response: Response<EventResponse>
+                call: Call<EventResponse>, response: Response<EventResponse>
             ) {
-                _isLoading.value = false // Sembunyikan progress bar
+                _isLoading.value = false
                 if (response.isSuccessful) {
                     _events.value = response.body()?.listEvents
                 } else {
@@ -40,7 +39,7 @@ class UpcomingViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<EventResponse>, t: Throwable) {
-                _isLoading.value = false // Sembunyikan progress bar
+                _isLoading.value = false
                 Log.e(TAG, "onFailure: ${t.message}")
             }
         })

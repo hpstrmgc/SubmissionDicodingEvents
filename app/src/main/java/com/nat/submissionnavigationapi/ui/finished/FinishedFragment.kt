@@ -8,24 +8,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.nat.submissionnavigationapi.DetailEventActivity
-import com.nat.submissionnavigationapi.FinishedEventsAdapterForFinishedFragment
-import com.nat.submissionnavigationapi.ListEventsItem
 import com.nat.submissionnavigationapi.databinding.FragmentFinishedBinding
+import com.nat.submissionnavigationapi.ui.detail.DetailEventActivity
+import com.nat.submissionnavigationapi.ui.detail.ListEventsItem
 
-class FinishedFragment : Fragment(),
-    FinishedEventsAdapterForFinishedFragment.OnItemClickCallback {
+class FinishedFragment : Fragment(), FinishedEventsAdapterForFinishedFragment.OnItemClickCallback {
 
     private var _binding: FragmentFinishedBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val finishedViewModel =
-            ViewModelProvider(this)[FinishedViewModel::class.java]
+        val finishedViewModel = ViewModelProvider(this)[FinishedViewModel::class.java]
 
         _binding = FragmentFinishedBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -36,7 +31,7 @@ class FinishedFragment : Fragment(),
         finishedViewModel.finishedEvents.observe(viewLifecycleOwner) { finishedEvents ->
             binding.progressBar.visibility = View.GONE
             val adapter = FinishedEventsAdapterForFinishedFragment(finishedEvents)
-            adapter.setOnItemClickCallback(this) // Set callback
+            adapter.setOnItemClickCallback(this)
             binding.rvFinished.adapter = adapter
         }
 

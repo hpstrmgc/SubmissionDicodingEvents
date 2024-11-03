@@ -4,19 +4,19 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.nat.submissionnavigationapi.resource.ApiConfig
+import com.nat.submissionnavigationapi.resource.EventResponse
+import com.nat.submissionnavigationapi.ui.detail.ListEventsItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.nat.submissionnavigationapi.ApiConfig
-import com.nat.submissionnavigationapi.EventResponse
-import com.nat.submissionnavigationapi.ListEventsItem
 
 class HomeViewModel : ViewModel() {
 
     private val _events = MutableLiveData<List<ListEventsItem>>()
     val events: LiveData<List<ListEventsItem>> = _events
 
-    private val _finishedEvents = MutableLiveData<List<ListEventsItem>>() // Tambahkan LiveData untuk finished events
+    private val _finishedEvents = MutableLiveData<List<ListEventsItem>>()
     val finishedEvents: LiveData<List<ListEventsItem>> = _finishedEvents
 
     private val _errorState = MutableLiveData<String?>()
@@ -27,15 +27,15 @@ class HomeViewModel : ViewModel() {
 
     init {
         fetchEvents()
-        fetchFinishedEvents() // Panggil untuk mendapatkan finished events
+        fetchFinishedEvents()
     }
 
     private fun fetchEvents() {
-        _isLoading.value = true // Tampilkan progress bar
+        _isLoading.value = true
         val apiService = ApiConfig.getApiService()
         apiService.getUpcomingEvents().enqueue(object : Callback<EventResponse> {
             override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
-                _isLoading.value = false // Sembunyikan progress bar
+                _isLoading.value = false
 
                 if (response.isSuccessful) {
                     response.body()?.let {
@@ -50,25 +50,23 @@ class HomeViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<EventResponse>, t: Throwable) {
-                _isLoading.value = false // Sembunyikan progress bar
-                _errorState.value = "Failure: ${t.message}" // Update error state
+                _isLoading.value = false
+                _errorState.value = "Failure: ${t.message}"
                 Log.d("HomeViewModel", "Failure: ${t.message}")
             }
         })
     }
 
     private fun fetchFinishedEvents() {
-        // Implementasi pemanggilan API untuk finished events
-        // Misalnya, jika Anda menggunakan endpoint yang berbeda, tambahkan logika pemanggilan API di sini
-        _isLoading.value = true // Tampilkan progress bar
+        _isLoading.value = true
         val apiService = ApiConfig.getApiService()
         apiService.getFinishedEvents().enqueue(object : Callback<EventResponse> {
             override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
-                _isLoading.value = false // Sembunyikan progress bar
+                _isLoading.value = false
 
                 if (response.isSuccessful) {
                     response.body()?.let {
-                        _finishedEvents.value = it.listEvents // Asumsi data finished events berada di sini
+                        _finishedEvents.value = it.listEvents
                     } ?: run {
                         _errorState.value = "Response body is null"
                     }
@@ -79,8 +77,8 @@ class HomeViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<EventResponse>, t: Throwable) {
-                _isLoading.value = false // Sembunyikan progress bar
-                _errorState.value = "Failure: ${t.message}" // Update error state
+                _isLoading.value = false
+                _errorState.value = "Failure: ${t.message}"
                 Log.d("HomeViewModel", "Failure: ${t.message}")
             }
         })
@@ -96,6 +94,6 @@ class HomeViewModel : ViewModel() {
     }
 
     fun clearError() {
-        _errorState.value = null // Reset error state
+        _errorState.value = null
     }
 }

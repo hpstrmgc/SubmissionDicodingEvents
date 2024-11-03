@@ -18,4 +18,5 @@
     <string name="hint_owner">Owner</string>
     <string name="hint_nama_acara">Event Name</string>
     <string name="remaining_quota">Remaining Quota: %d</string>
+    <string name="favorites_label">Favorites</string>
 </resources>

@@ -22,4 +22,10 @@
         android:name="com.nat.submissionnavigationapi.ui.finished.FinishedFragment"
         android:label="@string/title_finished"
         tools:layout="@layout/fragment_finished" />
+
+    <fragment
+        android:id="@+id/navigation_favorites"
+        android:name="com.nat.submissionnavigationapi.ui.favorite.FavoriteFragment"
+        android:label="@string/favorites_label"
+        tools:layout="@layout/fragment_favorite" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.nat.submissionnavigationapi
+package com.nat.submissionnavigationapi.resource
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

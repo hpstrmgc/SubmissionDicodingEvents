@@ -10,11 +10,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.nat.submissionnavigationapi.DetailEventActivity
-import com.nat.submissionnavigationapi.FinishedEventsAdapter
-import com.nat.submissionnavigationapi.ListEventsItem
-import com.nat.submissionnavigationapi.UpcomingEventsAdapter
 import com.nat.submissionnavigationapi.databinding.FragmentHomeBinding
+import com.nat.submissionnavigationapi.ui.detail.DetailEventActivity
+import com.nat.submissionnavigationapi.ui.detail.ListEventsItem
+import com.nat.submissionnavigationapi.ui.finished.FinishedEventsAdapter
+import com.nat.submissionnavigationapi.ui.upcoming.UpcomingEventsAdapter
 
 class HomeFragment : Fragment(), FinishedEventsAdapter.OnItemClickCallback {
 
@@ -25,15 +25,14 @@ class HomeFragment : Fragment(), FinishedEventsAdapter.OnItemClickCallback {
     private lateinit var finishedEventsAdapter: FinishedEventsAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
-        binding.rvUpcoming.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvUpcoming.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvFinished.layoutManager = LinearLayoutManager(context)
 
         homeViewModel.events.observe(viewLifecycleOwner) { events ->

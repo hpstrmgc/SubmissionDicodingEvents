@@ -1,4 +1,4 @@
-package com.nat.submissionnavigationapi
+package com.nat.submissionnavigationapi.ui.main
 
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -7,6 +7,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.nat.submissionnavigationapi.R
 import com.nat.submissionnavigationapi.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

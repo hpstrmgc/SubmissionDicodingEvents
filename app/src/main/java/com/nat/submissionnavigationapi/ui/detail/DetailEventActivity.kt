@@ -1,4 +1,4 @@
-package com.nat.submissionnavigationapi
+package com.nat.submissionnavigationapi.ui.detail
 
 import android.content.Intent
 import android.net.Uri
@@ -13,12 +13,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.nat.submissionnavigationapi.ApiConfig.getApiService
+import com.nat.submissionnavigationapi.R
+import com.nat.submissionnavigationapi.resource.ApiConfig.getApiService
+import com.nat.submissionnavigationapi.resource.EventResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-@Suppress("DEPRECATION")
 class DetailEventActivity : AppCompatActivity() {
     private lateinit var imageEventCover: ImageView
     private lateinit var textEventName: TextView
@@ -84,9 +85,7 @@ class DetailEventActivity : AppCompatActivity() {
     }
 
     private fun displayEventDetails(event: ListEventsItem) {
-        Glide.with(this)
-            .load(event.mediaCover)
-            .into(imageEventCover)
+        Glide.with(this).load(event.mediaCover).into(imageEventCover)
         textEventName.text = event.name
         textOwnerName.text = event.ownerName
         textEventTime.text = event.beginTime

@@ -1,4 +1,4 @@
-package com.nat.submissionnavigationapi
+package com.nat.submissionnavigationapi.resource
 
 import retrofit2.Call
 import retrofit2.http.GET

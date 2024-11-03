@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.nat.submissionnavigationapi.ApiConfig
-import com.nat.submissionnavigationapi.EventResponse
-import com.nat.submissionnavigationapi.ListEventsItem
+import com.nat.submissionnavigationapi.resource.ApiConfig
+import com.nat.submissionnavigationapi.resource.EventResponse
+import com.nat.submissionnavigationapi.ui.detail.ListEventsItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,8 +28,7 @@ class FinishedViewModel : ViewModel() {
         val client = ApiConfig.getApiService().getFinishedEvents()
         client.enqueue(object : Callback<EventResponse> {
             override fun onResponse(
-                call: Call<EventResponse>,
-                response: Response<EventResponse>
+                call: Call<EventResponse>, response: Response<EventResponse>
             ) {
                 _isLoading.value = false
                 if (response.isSuccessful) {

@@ -8,10 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.nat.submissionnavigationapi.DetailEventActivity
-import com.nat.submissionnavigationapi.ListEventsItem
-import com.nat.submissionnavigationapi.UpcomingEventsAdapterForUpcomingFragment
 import com.nat.submissionnavigationapi.databinding.FragmentUpcomingBinding
+import com.nat.submissionnavigationapi.ui.detail.DetailEventActivity
+import com.nat.submissionnavigationapi.ui.detail.ListEventsItem
 
 class UpcomingFragment : Fragment(), UpcomingEventsAdapterForUpcomingFragment.OnItemClickCallback {
 
@@ -19,9 +18,7 @@ class UpcomingFragment : Fragment(), UpcomingEventsAdapterForUpcomingFragment.On
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         val upcomingViewModel = ViewModelProvider(this)[UpcomingViewModel::class.java]
 
