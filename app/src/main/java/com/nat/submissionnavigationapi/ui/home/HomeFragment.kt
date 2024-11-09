@@ -30,6 +30,9 @@ class HomeFragment : Fragment(), FinishedEventsAdapter.OnItemClickCallback {
     private lateinit var upcomingEventsAdapter: UpcomingEventsAdapter
     private lateinit var finishedEventsAdapter: FinishedEventsAdapter
 
+    private var isUpcomingLoaded = false
+    private var isFinishedLoaded = false
+
     private val settingsViewModel: SettingsViewModel by viewModels {
         val pref = SettingsPreferences.getInstance(requireContext().dataStore)
         SettingsViewModelFactory(pref)
@@ -46,10 +49,19 @@ class HomeFragment : Fragment(), FinishedEventsAdapter.OnItemClickCallback {
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvFinished.layoutManager = LinearLayoutManager(context)
 
+        homeViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) {
+                isUpcomingLoaded = false
+                isFinishedLoaded = false
+            }
+        }
+
         homeViewModel.events.observe(viewLifecycleOwner) { events ->
             events?.let {
                 upcomingEventsAdapter = UpcomingEventsAdapter(it)
                 binding.rvUpcoming.adapter = upcomingEventsAdapter
+                isUpcomingLoaded = true
+                updateProgressBarVisibility()
             } ?: run {
                 Log.d("HomeFragment", "No upcoming events found.")
             }
@@ -60,15 +72,11 @@ class HomeFragment : Fragment(), FinishedEventsAdapter.OnItemClickCallback {
                 finishedEventsAdapter = FinishedEventsAdapter(it)
                 finishedEventsAdapter.setOnItemClickCallback(this)
                 binding.rvFinished.adapter = finishedEventsAdapter
+                isFinishedLoaded = true
+                updateProgressBarVisibility()
             } ?: run {
                 Log.d("HomeFragment", "No finished events found.")
             }
-        }
-
-        homeViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-            binding.rvUpcoming.visibility = if (isLoading) View.GONE else View.VISIBLE
-            binding.rvFinished.visibility = if (isLoading) View.GONE else View.VISIBLE
         }
 
         homeViewModel.errorState.observe(viewLifecycleOwner) { errorMessage ->
@@ -100,5 +108,14 @@ class HomeFragment : Fragment(), FinishedEventsAdapter.OnItemClickCallback {
         val intent = Intent(requireContext(), DetailEventActivity::class.java)
         intent.putExtra("event_id", data.id)
         startActivity(intent)
+    }
+
+    private fun updateProgressBarVisibility() {
+        binding.progressBar.visibility =
+            if (!isUpcomingLoaded || !isFinishedLoaded) View.VISIBLE else View.GONE
+        binding.rvUpcoming.visibility =
+            if (!isUpcomingLoaded || !isFinishedLoaded) View.GONE else View.VISIBLE
+        binding.rvFinished.visibility =
+            if (!isUpcomingLoaded || !isFinishedLoaded) View.GONE else View.VISIBLE
     }
 }

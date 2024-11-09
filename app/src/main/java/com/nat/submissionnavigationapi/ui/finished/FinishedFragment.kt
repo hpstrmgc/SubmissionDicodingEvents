@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.nat.submissionnavigationapi.databinding.FragmentFinishedBinding
 import com.nat.submissionnavigationapi.ui.detail.DetailEventActivity
 import com.nat.submissionnavigationapi.ui.detail.ListEventsItem
@@ -36,8 +36,9 @@ class FinishedFragment : Fragment(), FinishedEventsAdapterForFinishedFragment.On
         _binding = FragmentFinishedBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val gridLayoutManager = GridLayoutManager(context, 2)
-        binding.rvFinished.layoutManager = gridLayoutManager
+        // Ubah layout manager menjadi StaggeredGridLayoutManager
+        binding.rvFinished.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
         finishedViewModel.finishedEvents.observe(viewLifecycleOwner) { finishedEvents ->
             binding.progressBar.visibility = View.GONE
