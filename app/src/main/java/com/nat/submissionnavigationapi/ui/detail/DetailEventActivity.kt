@@ -11,11 +11,19 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.nat.submissionnavigationapi.R
-import com.nat.submissionnavigationapi.resource.ApiConfig.getApiService
+import com.nat.submissionnavigationapi.database.FavoriteEvent
+import com.nat.submissionnavigationapi.repository.ViewModelFactory
+import com.nat.submissionnavigationapi.resource.ApiConfig
 import com.nat.submissionnavigationapi.resource.EventResponse
+import com.nat.submissionnavigationapi.ui.favorite.FavoriteViewModel
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,6 +37,14 @@ class DetailEventActivity : AppCompatActivity() {
     private lateinit var textDescription: TextView
     private lateinit var buttonOpenLink: Button
     private lateinit var progressBar: ProgressBar
+    private lateinit var fabFavorite: FloatingActionButton
+
+    private var isFavorite = false
+    private var currentEvent: ListEventsItem? = null
+
+    private val favoriteViewModel: FavoriteViewModel by viewModels {
+        ViewModelFactory.getInstance(application)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +59,7 @@ class DetailEventActivity : AppCompatActivity() {
         textDescription = findViewById(R.id.text_description)
         buttonOpenLink = findViewById(R.id.button_open_link)
         progressBar = findViewById(R.id.progress_bar)
+        fabFavorite = findViewById(R.id.fab_favorite)
 
         val eventId = intent.getIntExtra("event_id", -1)
         if (eventId != -1) {
@@ -51,12 +68,34 @@ class DetailEventActivity : AppCompatActivity() {
             Log.e("DetailEventActivity", "Event ID is invalid")
             showError("Invalid event ID")
         }
+
+        fabFavorite.setOnClickListener {
+            currentEvent?.let { event ->
+                val favoriteEvent = FavoriteEvent(
+                    id = event.id,
+                    name = event.name,
+                    beginTime = event.beginTime,
+                    mediaCover = event.mediaCover
+                )
+                // Panggil addOrRemoveFavorite() dari coroutine
+                lifecycleScope.launch {
+                    favoriteViewModel.addOrRemoveFavorite(favoriteEvent)
+                }
+            }
+        }
+
+        favoriteViewModel.favoriteEvents.observe(this) { favoriteEvents ->
+            currentEvent?.let { event ->
+                isFavorite = favoriteEvents.any { it.id == event.id }
+                setFavoriteIcon()
+            }
+        }
     }
 
     private fun fetchEventDetails(eventId: Int) {
         progressBar.visibility = View.VISIBLE
 
-        val apiService = getApiService()
+        val apiService = ApiConfig.getApiService()
         val call: Call<EventResponse> = apiService.getEventDetails(eventId)
         call.enqueue(object : Callback<EventResponse> {
             override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
@@ -66,6 +105,7 @@ class DetailEventActivity : AppCompatActivity() {
                     val event = response.body()?.listEvents?.firstOrNull { it.id == eventId }
                     if (event != null) {
                         displayEventDetails(event)
+                        currentEvent = event
                     } else {
                         Log.e("DetailEventActivity", "Event not found in the response")
                         showError("Event not found")
@@ -90,16 +130,31 @@ class DetailEventActivity : AppCompatActivity() {
         textOwnerName.text = event.ownerName
         textEventTime.text = event.beginTime
 
-        // Use string resource with placeholder
         val remainingQuota = event.quota - event.registrants
         textQuota.text = getString(R.string.remaining_quota, remainingQuota)
 
-        textDescription.text = Html.fromHtml(event.description)
+        textDescription.text = Html.fromHtml(event.description, Html.FROM_HTML_MODE_COMPACT)
 
         buttonOpenLink.setOnClickListener {
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(event.link))
             startActivity(browserIntent)
         }
+
+        // Pastikan status favorit diperbarui setelah event ditampilkan
+        checkIfFavorite(event)
+    }
+
+    private fun checkIfFavorite(event: ListEventsItem) {
+        favoriteViewModel.favoriteEvents.observe(this) { favoriteEvents ->
+            isFavorite = favoriteEvents.any { it.id == event.id }
+            setFavoriteIcon()
+        }
+    }
+
+    private fun setFavoriteIcon() {
+        fabFavorite.setImageResource(
+            if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
+        )
     }
 
     private fun showError(message: String) {

@@ -16,6 +16,11 @@ class UpcomingEventsAdapterForUpcomingFragment(private val eventsList: List<List
 
     private lateinit var onItemClickCallback: OnItemClickCallback
 
+    fun submitList(newEventsList: List<ListEventsItem>) {
+        var eventsList = newEventsList
+        notifyDataSetChanged()
+    }
+
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }

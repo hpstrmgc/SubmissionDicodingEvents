@@ -11,12 +11,14 @@
     <string name="tv_upcoming_recommendation">RECOMMENDATION EVENTS FOR YOU</string>
     <string name="btn_interested">I\'m Interested</string>
     <string name="text_remaining_quota">Remaining Quota</string>
-    <string name="title_description">Description</string>
+    <string name="title_description">Event Description</string>
     <string name="hint_deskripsi">Deskripsi</string>
     <string name="hint_kuota">Quota</string>
     <string name="hint_date">Event Date</string>
     <string name="hint_owner">Owner</string>
     <string name="hint_nama_acara">Event Name</string>
-    <string name="remaining_quota">Remaining Quota: %d</string>
+    <string name="remaining_quota">%d</string>
     <string name="favorites_label">Favorites</string>
+    <string name="tv_your_favorite_events">YOUR FAVORITE EVENTS</string>
+    <string name="settings_title">Settings</string>
 </resources>

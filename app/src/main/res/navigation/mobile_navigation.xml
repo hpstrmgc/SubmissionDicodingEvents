@@ -28,4 +28,10 @@
         android:name="com.nat.submissionnavigationapi.ui.favorite.FavoriteFragment"
         android:label="@string/favorites_label"
         tools:layout="@layout/fragment_favorite" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.nat.submissionnavigationapi.ui.settings.SettingsFragment"
+        android:label="@string/favorites_label"
+        tools:layout="@layout/fragment_settings" />
 </navigation>
