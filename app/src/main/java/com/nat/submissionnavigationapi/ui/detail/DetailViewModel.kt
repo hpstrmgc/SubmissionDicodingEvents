@@ -8,7 +8,8 @@ import com.nat.submissionnavigationapi.repository.EventRepository
 import kotlinx.coroutines.launch
 
 class DetailViewModel(private val repository: EventRepository) : ViewModel() {
-    fun getFavoriteEventById(id: Int): LiveData<FavoriteEvent?> = repository.getFavoriteEventById(id)
+    fun getFavoriteEventById(id: Int): LiveData<FavoriteEvent?> =
+        repository.getFavoriteEventById(id)
 
     fun insertFavoriteEvent(favoriteEvent: FavoriteEvent) = viewModelScope.launch {
         repository.insertFavoriteEvent(favoriteEvent)

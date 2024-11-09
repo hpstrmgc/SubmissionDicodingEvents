@@ -5,13 +5,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nat.submissionnavigationapi.database.FavoriteEvent
 import com.nat.submissionnavigationapi.databinding.FragmentFavoriteBinding
 import com.nat.submissionnavigationapi.repository.EventRepository
 import com.nat.submissionnavigationapi.ui.detail.DetailEventActivity
+import com.nat.submissionnavigationapi.ui.settings.SettingsPreferences
+import com.nat.submissionnavigationapi.ui.settings.SettingsViewModel
+import com.nat.submissionnavigationapi.ui.settings.SettingsViewModelFactory
+import com.nat.submissionnavigationapi.ui.settings.dataStore
 
 class FavoriteFragment : Fragment() {
 
@@ -20,6 +26,11 @@ class FavoriteFragment : Fragment() {
 
     private lateinit var viewModel: FavoriteViewModel
     private lateinit var favoriteAdapter: FavoriteEventsAdapter
+
+    private val settingsViewModel: SettingsViewModel by viewModels {
+        val pref = SettingsPreferences.getInstance(requireContext().dataStore)
+        SettingsViewModelFactory(pref)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,6 +71,15 @@ class FavoriteFragment : Fragment() {
                 startActivity(intent)
             }
         })
+
+        settingsViewModel.getThemeSettings()
+            .observe(viewLifecycleOwner) { isDarkModeActive: Boolean ->
+                if (isDarkModeActive) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+            }
     }
 
     override fun onDestroyView() {

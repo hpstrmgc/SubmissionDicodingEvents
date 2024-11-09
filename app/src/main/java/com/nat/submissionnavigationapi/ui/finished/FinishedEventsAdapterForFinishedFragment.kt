@@ -1,14 +1,11 @@
 package com.nat.submissionnavigationapi.ui.finished
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.nat.submissionnavigationapi.R
+import com.nat.submissionnavigationapi.databinding.ItemFinishedEventForFinishedFragmentBinding
 import com.nat.submissionnavigationapi.ui.detail.ListEventsItem
 
 class FinishedEventsAdapterForFinishedFragment(private val eventsList: List<ListEventsItem>) :
@@ -20,28 +17,27 @@ class FinishedEventsAdapterForFinishedFragment(private val eventsList: List<List
         this.onItemClickCallback = onItemClickCallback
     }
 
-    inner class FinishedEventViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val eventName: TextView = view.findViewById(R.id.tv_event_name)
-        private val eventImage: ImageView = view.findViewById(R.id.iv_event_image)
-        private val eventDate: TextView = view.findViewById(R.id.tv_event_date)
+    inner class FinishedEventViewHolder(private val binding: ItemFinishedEventForFinishedFragmentBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(event: ListEventsItem) {
-            eventName.text = event.name
-            eventDate.text = event.beginTime
+            binding.tvEventName.text = event.name
+            binding.tvEventDate.text = event.beginTime
 
             Glide.with(itemView.context).load(event.mediaCover).apply(
-                    RequestOptions().placeholder(android.R.color.darker_gray)
-                        .error(android.R.drawable.stat_notify_error)
-                ).into(eventImage)
+                RequestOptions().placeholder(android.R.color.darker_gray)
+                    .error(android.R.drawable.stat_notify_error)
+            ).into(binding.ivEventImage)
 
             itemView.setOnClickListener { onItemClickCallback.onItemClicked(event) }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FinishedEventViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_finished_event_for_finished_fragment, parent, false)
-        return FinishedEventViewHolder(view)
+        val binding = ItemFinishedEventForFinishedFragmentBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
+        return FinishedEventViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: FinishedEventViewHolder, position: Int) {

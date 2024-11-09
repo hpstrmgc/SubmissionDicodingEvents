@@ -9,18 +9,18 @@ import com.nat.submissionnavigationapi.database.FavoriteEvent
 import com.nat.submissionnavigationapi.databinding.ItemFavoriteEventBinding
 
 class FavoriteEventsAdapter(
-    private var favoriteEvents: List<FavoriteEvent> = emptyList() // Inisialisasi dengan list kosong
+    private var favoriteEvents: List<FavoriteEvent> = emptyList()
 ) : RecyclerView.Adapter<FavoriteEventsAdapter.FavoriteEventViewHolder>() {
 
-    private var onItemClickCallback: OnItemClickCallback? = null // Gunakan nullable untuk menangani saat belum di-set
+    private var onItemClickCallback: OnItemClickCallback? = null
 
     fun setEvents(newEvents: List<FavoriteEvent>) {
         favoriteEvents = newEvents
-        notifyDataSetChanged() // Beri tahu adapter bahwa data telah berubah
+        notifyDataSetChanged()
     }
 
     fun setOnItemClickCallback(callback: OnItemClickCallback) {
-        onItemClickCallback = callback // Set callback
+        onItemClickCallback = callback
     }
 
     inner class FavoriteEventViewHolder(private val binding: ItemFavoriteEventBinding) :
@@ -30,27 +30,20 @@ class FavoriteEventsAdapter(
             binding.tvEventName.text = event.name
             binding.tvEventDate.text = event.beginTime
 
-            Glide.with(itemView.context)
-                .load(event.mediaCover)
-                .apply(
-                    RequestOptions()
-                        .placeholder(android.R.color.darker_gray)
-                        .error(android.R.drawable.stat_notify_error)
-                )
-                .into(binding.ivEventImage) // Pastikan ini sesuai dengan ID di layout Anda
+            Glide.with(itemView.context).load(event.mediaCover).apply(
+                RequestOptions().placeholder(android.R.color.darker_gray)
+                    .error(android.R.drawable.stat_notify_error)
+            ).into(binding.ivEventImage)
 
-            // Set listener untuk klik item
             itemView.setOnClickListener {
-                onItemClickCallback?.onItemClicked(event) // Gunakan safe call
+                onItemClickCallback?.onItemClicked(event)
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteEventViewHolder {
         val binding = ItemFavoriteEventBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
+            LayoutInflater.from(parent.context), parent, false
         )
         return FavoriteEventViewHolder(binding)
     }

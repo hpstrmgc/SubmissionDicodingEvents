@@ -7,13 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nat.submissionnavigationapi.databinding.FragmentHomeBinding
 import com.nat.submissionnavigationapi.ui.detail.DetailEventActivity
 import com.nat.submissionnavigationapi.ui.detail.ListEventsItem
 import com.nat.submissionnavigationapi.ui.finished.FinishedEventsAdapter
+import com.nat.submissionnavigationapi.ui.settings.SettingsPreferences
+import com.nat.submissionnavigationapi.ui.settings.SettingsViewModel
+import com.nat.submissionnavigationapi.ui.settings.SettingsViewModelFactory
+import com.nat.submissionnavigationapi.ui.settings.dataStore
 import com.nat.submissionnavigationapi.ui.upcoming.UpcomingEventsAdapter
 
 class HomeFragment : Fragment(), FinishedEventsAdapter.OnItemClickCallback {
@@ -23,6 +29,11 @@ class HomeFragment : Fragment(), FinishedEventsAdapter.OnItemClickCallback {
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var upcomingEventsAdapter: UpcomingEventsAdapter
     private lateinit var finishedEventsAdapter: FinishedEventsAdapter
+
+    private val settingsViewModel: SettingsViewModel by viewModels {
+        val pref = SettingsPreferences.getInstance(requireContext().dataStore)
+        SettingsViewModelFactory(pref)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -47,7 +58,7 @@ class HomeFragment : Fragment(), FinishedEventsAdapter.OnItemClickCallback {
         homeViewModel.finishedEvents.observe(viewLifecycleOwner) { finishedEvents ->
             finishedEvents?.let {
                 finishedEventsAdapter = FinishedEventsAdapter(it)
-                finishedEventsAdapter.setOnItemClickCallback(this) // Set callback
+                finishedEventsAdapter.setOnItemClickCallback(this)
                 binding.rvFinished.adapter = finishedEventsAdapter
             } ?: run {
                 Log.d("HomeFragment", "No finished events found.")
@@ -67,6 +78,15 @@ class HomeFragment : Fragment(), FinishedEventsAdapter.OnItemClickCallback {
                 homeViewModel.clearError()
             }
         }
+
+        settingsViewModel.getThemeSettings()
+            .observe(viewLifecycleOwner) { isDarkModeActive: Boolean ->
+                if (isDarkModeActive) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+            }
 
         return binding.root
     }

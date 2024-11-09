@@ -35,9 +35,9 @@ class UpcomingEventsAdapterForUpcomingFragment(private val eventsList: List<List
             eventDate.text = event.beginTime
 
             Glide.with(itemView.context).load(event.mediaCover).apply(
-                    RequestOptions().placeholder(android.R.color.darker_gray)
-                        .error(android.R.drawable.stat_notify_error)
-                ).into(eventImage)
+                RequestOptions().placeholder(android.R.color.darker_gray)
+                    .error(android.R.drawable.stat_notify_error)
+            ).into(eventImage)
 
             itemView.setOnClickListener { onItemClickCallback.onItemClicked(event) }
         }

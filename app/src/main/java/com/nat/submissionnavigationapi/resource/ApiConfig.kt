@@ -7,10 +7,9 @@ object ApiConfig {
     private const val BASE_URL = "https://event-api.dicoding.dev/"
 
     fun getApiService(): ApiService {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        val retrofit =
+            Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
+                .build()
         return retrofit.create(ApiService::class.java)
     }
 }

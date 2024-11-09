@@ -14,4 +14,4 @@ data class ListEventsItem(
     val registrants: Int,
     val description: String,
     val link: String
-): Parcelable
+) : Parcelable
