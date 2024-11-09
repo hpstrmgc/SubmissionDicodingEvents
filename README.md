@@ -2,6 +2,12 @@
 
 This is a submission for my Bangkit program (Android Path), basically an app that displays data from Dicoding API. I am using retrofit as network library.
 
+## Table of Contents
+- [What I Used in This Project](#what-i-used-in-this-project)
+- [Installation](#installation)
+- [Screenshots](#screenshots)
+- [Connect With Me](#connect-with-me)
+
 ## What I Used in This Project
 * Language: Kotlin
 * Database: Room (SQLite)
